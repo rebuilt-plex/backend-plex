@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 // base model to define other class by, basic SQL commands
 class base_model {
     constructor(table) {
-        this.table =table;
+        this.table = table;
     };
 
     get_all() {
@@ -13,7 +13,7 @@ class base_model {
 
     async insert(data) {
         try {
-            let [ id ] = await db(this.table).insert(data);
+            let [id] = await db(this.table).insert(data);
             return await this.find_by({id})
         } catch (e) {
             console.log(e)
@@ -30,9 +30,11 @@ class base_model {
         }
     };
 
-    update(id, data) {
+    async update(id, data) {
+        console.log(data)
         try {
-            return db(this.table).update(data).where({id: id})
+            await db(this.table).update(data).where({id: id})
+            return this.find_by({id})
         } catch (e) {
             console.log(e.message)
             return e
@@ -48,6 +50,23 @@ class employee_model extends base_model {
     clocked_in() {
         try {
             return db(this.table).where({clocked_in: 1})
+        } catch (e) {
+            console.log(e)
+            return e
+        }
+    }
+
+    employee_name(id) {
+        try {
+            return db(this.table).where({id}).select('first_name', 'last_name').first();
+        } catch (e) {
+            console.log(e)
+            return e
+        }
+    }
+    async remove(id) {
+        try {
+            return await db(this.table).where({id}).delete();
         } catch (e) {
             console.log(e)
             return e

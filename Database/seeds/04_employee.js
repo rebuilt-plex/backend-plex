@@ -1,5 +1,4 @@
 exports.seed = async function(knex) {
-    await knex('employees').del()
     await knex('employees').insert([
         {
             id: 1,
@@ -8,7 +7,8 @@ exports.seed = async function(knex) {
             department_id: 1,
             title_id: 1,
             password: '123456789',
-            employee_num: '17063'
+            employee_num: '17063',
+            plant_id: 1
         },
         {
             id: 2,
@@ -17,7 +17,8 @@ exports.seed = async function(knex) {
             department_id: 1,
             title_id: 1,
             password: 'abcdefg',
-            employee_num: '6939'
+            employee_num: '6939',
+            plant_id: 2
         },
         {
             id: 3,
@@ -26,7 +27,8 @@ exports.seed = async function(knex) {
             department_id: 12,
             title_id: 3,
             password: '123456789',
-            employee_num: '12125'
+            employee_num: '12125',
+            plant_id: 6
         },
         {
             id: 4,
@@ -35,7 +37,8 @@ exports.seed = async function(knex) {
             department_id: 16,
             title_id: 3,
             password: '123456789',
-            employee_num: '12126'
+            employee_num: '12126',
+            plant_id: 7
         },
     ])
 };

@@ -1,5 +1,4 @@
 exports.seed = async function(knex) {
-    await knex('title').del()
     await knex('title').insert([
         {id: 1, name: 'Welder'},
         {id: 2, name: 'Roll-Former'},

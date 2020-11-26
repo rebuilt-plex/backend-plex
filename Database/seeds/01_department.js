@@ -1,5 +1,5 @@
 exports.seed = async function(knex) {
-  await knex('department').del()
+    // TODO check all ids and make sure there is an 8
   await knex('department').insert([
       {id: 1, name: 'Welding'},
       {id: 2, name: 'Roll-Forming'},
@@ -8,6 +8,7 @@ exports.seed = async function(knex) {
       {id: 5, name: 'Spot-Welding'},
       {id: 6, name: 'Benders'},
       {id: 7, name: '3D'},
+      {id: 8, name: 'Tesla'},
       {id: 9, name: 'Tesla'},
       {id: 10, name: 'Laser'},
       {id: 11, name: 'Supervision'},

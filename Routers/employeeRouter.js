@@ -6,9 +6,10 @@ const hr_admin = require('../utils/hr_admin');
 let router = express.Router();
 
 // route to return all employees currently clocked in
-//TODO add building location to employee / new table
 router.get('/clocked_in', async (req, res, next) => {
     try {
+        // TODO create migration to add plants (buildings)
+        // create new table for plants
         let all_employees = await employee.clocked_in()
         res.status(200).json(all_employees)
     } catch (e) {
@@ -52,6 +53,74 @@ router.post('/new_employee', hr_admin(), async (req, res, next) => {
            employee_num,
            message: `${new_employee.last_name}, ${new_employee.first_name} has been added`
        })
+   } catch (e) {
+       console.log(e)
+       return e
+   }
+});
+// PUT route for HR to update employee records
+router.put('/update_employee', hr_admin(), async (req, res, next) => {
+   try {
+       // pulling out all possible updatable DB fields
+       let { employee_num,
+             first_name,
+             last_name,
+             department_id,
+             title_id,
+             password
+       } = req.body;
+       // using employee_num to verify employee is real
+       let verify_employee = await employee.find_by({employee_num});
+       // check and return message if employee is not found
+       if (!verify_employee) {
+           res.status(400).json({
+               error_message: `${employee_num} does not exist in our database`
+           })
+       }
+       // object of updatable fields we'll pass to our DB models
+       let new_employee_data = {
+           first_name,
+           last_name,
+           department_id,
+           title_id,
+           password,
+       }
+       // updating employee based of our DB id
+       let updated_employee = await employee.update(verify_employee.id, new_employee_data);
+       // returning updated employee record
+       res.status(200).json(updated_employee)
+   } catch (e) {
+       console.log(e)
+       return e
+   }
+});
+// post route to handle removing an employee for the database
+router.post('/remove_employee', hr_admin(), async (req, res, next) => {
+    try {
+       let { employee_num } = req.body
+        // using employee_num to verify employee is real
+        let verify_employee = await employee.find_by({employee_num});
+        // check and return message if employee is not found
+        if (!verify_employee) {
+            res.status(400).json({
+                error_message: `${employee_num} does not exist in our database`
+            })
+        }
+        // retrieving employee name to return
+        let employee_name = await employee.employee_name(verify_employee.id);
+        // updating database to remove selected employee
+        let removed_employee = await employee.remove(verify_employee.id)
+        // check to make sure the employee was removed successfully
+        if (removed_employee) {
+            res.status(200).json({
+                message: `${employee_name.last_name}, ${employee_name.first_name} has been removed`
+            })
+        } else {
+            // general error if employee was NOT removed from database
+            res.status(500).json({
+                error_message: 'Server error please contact IT'
+            })
+        }
    } catch (e) {
        console.log(e)
        return e
