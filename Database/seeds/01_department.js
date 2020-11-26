@@ -14,6 +14,7 @@ exports.seed = async function(knex) {
       {id: 12, name: 'IT'},
       {id: 13, name: 'Production-Manager'},
       {id: 14, name: 'Engineering'},
-      {id: 15, name: 'Quality'}
+      {id: 15, name: 'Quality'},
+      {id: 16, name: 'Human-Resources'}
   ])
 };

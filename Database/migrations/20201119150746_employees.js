@@ -1,12 +1,12 @@
 
 exports.up = async function(knex) {
  await knex.schema.createTable('department', dep => {
-     dep.increments('id').notNullable().primary();
+     dep.increments('id').primary();
      dep.string('name').notNullable();
  });
 
  await knex.schema.createTable('title', title => {
-    title.increments('id').primary().notNullable();
+    title.increments('id').primary();
     title.string('name').notNullable();
  });
 
@@ -17,7 +17,7 @@ exports.up = async function(knex) {
       emp.integer('department_id').unsigned();
       emp.foreign('department_id').references('department.id');
       emp.integer('title_id').unsigned();
-      emp.foreign('title_id').references('title.id');
+      emp.foreign('title_id').references('title.id')
       emp.string('password').nullable();
   });
 };

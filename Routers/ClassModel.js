@@ -1,6 +1,7 @@
 const db = require('../Database/config');
 const bcrypt = require('bcrypt');
 
+// base model to define other class by, basic SQL commands
 class base_model {
     constructor(table) {
         this.table =table;
@@ -10,8 +11,17 @@ class base_model {
         return db(this.table);
     };
 
+    async insert(data) {
+        try {
+            let [ id ] = await db(this.table).insert(data);
+            return await this.find_by({id})
+        } catch (e) {
+            console.log(e)
+            return e
+        }
+    }
+
     async find_by(data) {
-        console.log(data)
         try {
             return await db(this.table).select('*').where(data).first()
         } catch (e) {
