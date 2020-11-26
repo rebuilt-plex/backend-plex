@@ -29,6 +29,7 @@ router.post('/login', async (req, res, next) => {
         }
         // deleting the user password from return obj for security reasons
         delete employee_data.password
+        delete employee_data.clocked_in
         res.status(200).json(employee_data)
     } catch (e) {
         console.log(e)

@@ -1,10 +1,10 @@
 const { employee } = require('../Routers/ClassModel');
 
-function hr_admin() {
+function hr_admin(hr_id) {
     return async (req, res, next) => {
         try {
             // pulling employee id from body
-            let { id } = req.body;
+            let { id } = req.body || hr_id;
             // finding employee record
             let employee_data = await employee.find_by({id});
             // catch if id is not found in DB
