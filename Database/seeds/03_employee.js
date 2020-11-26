@@ -6,7 +6,7 @@ exports.seed = async function(knex) {
             first_name: 'Joe',
             last_name: 'Thompson',
             department_id: 1,
-            title_id: 7,
+            title_id: 1,
             password: '123456789',
             employee_num: '17063'
         },
@@ -14,8 +14,8 @@ exports.seed = async function(knex) {
             id: 2,
             first_name: 'Bobby',
             last_name: 'Hill',
-            department_id: 5,
-            title_id: 12,
+            department_id: 1,
+            title_id: 1,
             password: 'abcdefg',
             employee_num: '6939'
         },
@@ -27,6 +27,15 @@ exports.seed = async function(knex) {
             title_id: 3,
             password: '123456789',
             employee_num: '12125'
+        },
+        {
+            id: 4,
+            first_name: 'Dave',
+            last_name: 'Weber',
+            department_id: 16,
+            title_id: 3,
+            password: '123456789',
+            employee_num: '12126'
         },
     ])
 };
