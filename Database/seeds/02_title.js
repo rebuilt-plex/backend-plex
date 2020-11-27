@@ -6,8 +6,9 @@ exports.seed = async function(knex) {
         {id: 4, name: 'Mechanical-Tech'},
         {id: 5, name: 'Electrical-Tech'},
         {id: 6, name: 'General-Labor'},
-        {id: 7, name: 'Weld-Tech 1'},
-        {id: 9, name: 'Weld-Tech-Trainee'},
+        {id: 7, name: 'Weld Tech 1'},
+        {id: 8, name: 'Building Maintenance'},
+        {id: 9, name: 'Weld Tech Trainee'},
         {id: 10, name: 'Operator'},
         {id: 11, name: 'Supervisor'},
         {id: 12, name: 'Team-Lead'},
@@ -15,7 +16,7 @@ exports.seed = async function(knex) {
         {id: 14, name: 'Engineer'},
         {id: 15, name: 'Hilo-Driver'},
         {id: 16, name: 'Lube-Tech'},
-        {id: 17, name: 'Tool-Room-Tech'},
+        {id: 17, name: 'Tool Room Tech'},
         {id: 18, name: 'Machinist'},
         {id: 19, name: 'Press-Operator'},
         {id: 20, name: 'Bender-Tech'},
@@ -23,7 +24,7 @@ exports.seed = async function(knex) {
         {id: 22, name: 'Tesla-Tech'},
         {id: 23, name: 'Laser-Tech'},
         {id: 24, name: 'Quality-Tech'},
-        {id: 25, name: 'Roll-Form-Expert'},
+        {id: 25, name: 'Roll Form Expert'},
         {id: 26, name: 'Backup-TL'}
     ])
 };

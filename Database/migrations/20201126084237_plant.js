@@ -8,7 +8,7 @@ exports.up = async function(knex) {
 
   await knex.schema.table('employees', emp => {
       emp.integer('plant_id').unsigned();
-      emp.foreign('plant_id').references('plant.id')
+      emp.foreign('plant_id').references('plant.id');
   });
 
   await knex.schema.createTable('plant_department', table => {

@@ -6,11 +6,13 @@ const hr_admin = require('../utils/hr_admin');
 let router = express.Router();
 
 // route to return all employees currently clocked in
-router.get('/clocked_in', async (req, res, next) => {
+router.post('/clocked_in', async (req, res, next) => {
     try {
-        // TODO create migration to add plants (buildings)
-        // create new table for plants
-        let all_employees = await employee.clocked_in()
+        // using post route to send plant_id to get all employees
+        // clocked in at a given plant
+        // in future release could turn into GET using JWT-decode to get plant_id
+        let { plant_id } = req.body;
+        let all_employees = await employee.clocked_in(plant_id)
         res.status(200).json(all_employees)
     } catch (e) {
         console.log(e)
@@ -29,6 +31,7 @@ router.post('/new_employee', hr_admin(), async (req, res, next) => {
             title_id,
             employee_num,
             password,
+            plant_id
         } = req.body
        // check to make sure the employee_num is not already in DB
        let verify_employee_num = await employee.find_by({employee_num})
@@ -44,7 +47,8 @@ router.post('/new_employee', hr_admin(), async (req, res, next) => {
            department_id: department_id || 1,
            title_id: title_id || 1,
            password: password || "123",
-           employee_num
+           employee_num,
+           plant_id
        })
        // return type: new employee id and employee_num
        // message to confirm employee has been registered
@@ -67,7 +71,8 @@ router.put('/update_employee', hr_admin(), async (req, res, next) => {
              last_name,
              department_id,
              title_id,
-             password
+             password,
+             plant_id
        } = req.body;
        // using employee_num to verify employee is real
        let verify_employee = await employee.find_by({employee_num});
@@ -84,6 +89,7 @@ router.put('/update_employee', hr_admin(), async (req, res, next) => {
            department_id,
            title_id,
            password,
+           plant_id
        }
        // updating employee based of our DB id
        let updated_employee = await employee.update(verify_employee.id, new_employee_data);

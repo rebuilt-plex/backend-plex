@@ -3,6 +3,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const auth_router = require('./Routers/authRouter');
 const employee_router = require('./Routers/employeeRouter');
+const plant_router = require('./Routers/plantRouter');
 
 // dev port setup
 const PORT = process.env.PORT || 4000;
@@ -12,8 +13,10 @@ const server = express();
 server.use(cors());
 server.use(express.json());
 server.use(helmet());
+// defined routes
 server.use('/auth', auth_router);
 server.use('/employee', employee_router);
+server.use('/plant', plant_router);
 // welcome message to the new plex server
 server.get('/', (req, res) => {
     res.status(200).json({
