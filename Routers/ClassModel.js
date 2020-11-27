@@ -31,7 +31,6 @@ class base_model {
     };
 
     async update(id, data) {
-        console.log(data)
         try {
             await db(this.table).update(data).where({id: id})
             return this.find_by({id})
@@ -47,9 +46,9 @@ class employee_model extends base_model {
         super(table);
     }
 
-    clocked_in() {
+    clocked_in(id) {
         try {
-            return db(this.table).where({clocked_in: 1})
+            return db(this.table).where({clocked_in: 1}).where({plant_id: id});
         } catch (e) {
             console.log(e)
             return e
@@ -72,6 +71,15 @@ class employee_model extends base_model {
             return e
         }
     }
+
+    async employee_plant(id) {
+        try {
+            return await db(this.table).where({plant_id: id});
+        } catch (e) {
+            console.log(e)
+            return e
+        }
+    }
 }
 
 class department_model extends base_model {
@@ -86,12 +94,28 @@ class title_model extends base_model {
     }
 }
 
+class plant_model extends base_model {
+    constructor(table) {
+        super(table);
+    }
+
+    plant_department(id) {
+        return db("plant_department as pd")
+            .join("plant as p", "p.id", "=", "pd.plant_id")
+            .join("department as d", "d.id", "=", "pd.department_id")
+            .where("p.id", id)
+            .select("d.name", "d.id");
+    }
+}
+
 const employee = new employee_model('employees');
 const department = new department_model('department');
-const title = new title_model('title')
+const title = new title_model('title');
+const plant = new plant_model('plant');
 
 module.exports = {
     employee,
     department,
-    title
+    title,
+    plant
 }
