@@ -20,7 +20,8 @@ exports.seed = async function(knex) {
       {id: 15, name: 'Quality'},
       {id: 16, name: 'Human-Resources'},
       {id: 17, name: 'Electrical'},
-      {id:18, name: 'Mechanical'},
-      {id: 19, name: 'Production-Hilo'}
+      {id: 18, name: 'Mechanical'},
+      {id: 19, name: 'Production-Hilo'},
+      {id: 20, name: 'Grinding'}
   ])
 };
