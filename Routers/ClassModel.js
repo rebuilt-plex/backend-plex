@@ -31,6 +31,8 @@ class base_model {
     };
 
     async update(id, data) {
+        console.log(id)
+        console.log(data)
         try {
             await db(this.table).update(data).where({id: id})
             return this.find_by({id})
@@ -80,6 +82,27 @@ class employee_model extends base_model {
             return e
         }
     }
+
+    async employee_workcenter(id) {
+        try {
+            return await db(this.table).where({workcenter_id: id})
+        } catch (e) {
+            console.log(e)
+            return e
+        }
+    }
+
+    async employee_logout(id) {
+        try {
+            return await db(this.table)
+                .where({id:id})
+                .select('first_name', 'last_name')
+                .first();
+        } catch (e) {
+            console.log(e)
+            return e
+        }
+    }
 }
 
 class department_model extends base_model {
@@ -108,14 +131,22 @@ class plant_model extends base_model {
     }
 }
 
+class workcenter_model extends base_model {
+    constructor(table) {
+        super(table);
+    }
+}
+
 const employee = new employee_model('employees');
 const department = new department_model('department');
 const title = new title_model('title');
 const plant = new plant_model('plant');
+const workcenter = new workcenter_model('workcenter');
 
 module.exports = {
     employee,
     department,
     title,
-    plant
+    plant,
+    workcenter
 }

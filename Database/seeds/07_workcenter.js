@@ -24,5 +24,6 @@ exports.seed = async function(knex) {
         {id: 22, status_id: 7, plant_id: 1, name: 'Machine 324', department_id: 5},
         {id: 23, status_id: 7, plant_id: 1, name: 'Debur 031', department_id: 20},
         {id: 24, status_id: 7, plant_id: 1, name: 'Weld 294', department_id: 1},
+        {id: 25, status_id: 7, plant_id: 1, name: 'General Labor', department_id: 1}
     ])
 };
