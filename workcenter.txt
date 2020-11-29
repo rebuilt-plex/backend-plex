@@ -1,4 +1,42 @@
-id
-name
-plant_id
-department_id
+workcenter schema:
+    id
+    name
+    plant_id
+    department_id
+    status_id
+
+status schema:
+    id
+    name
+    department_id
+    type
+
+
+raw part schema:
+    id
+    name
+    part_number
+    location
+    quantity
+    status
+    bin_type_id
+    alt_bin_type_id
+    load_time (loaded container to workcenter)
+
+
+finished part schema:
+    id
+    name
+    part_number
+    location
+    quantity
+    status
+    bin_type_id
+    alt_bin_type_id
+    add_time (finished container)
+    defect
+
+
+
+
+
