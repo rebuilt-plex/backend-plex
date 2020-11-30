@@ -33,9 +33,7 @@ router.get('/', async (req, res, next) => {
        return e
    }
 });
-// returns an array of status code options for selected department
-// TODO look into creating route to handle one click "down waiting for"
-// create different id for "down waiting for" or SQL to select only those???
+
 router.get('/:id', async (req, res, next) => {
     try {
         // pulling department id out of our url
