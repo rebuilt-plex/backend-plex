@@ -4,7 +4,7 @@ workcenter schema:
     plant_id
     department_id
     status_id
-
+// TODO work on status routes and how to connect them to work-centers
 status schema:
     id
     name

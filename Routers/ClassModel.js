@@ -109,6 +109,15 @@ class department_model extends base_model {
     constructor(table) {
         super(table);
     }
+
+    async return_department(id) {
+        try {
+            return await db(this.table).where({id:id}).select('id','name').first();
+        } catch (e) {
+            console.log(e)
+            return e
+        }
+    }
 }
 
 class title_model extends base_model {
@@ -137,16 +146,46 @@ class workcenter_model extends base_model {
     }
 }
 
+class status_model extends base_model {
+    constructor(table) {
+        super(table);
+    }
+
+    async status_department() {
+        try {
+            return await db(this.table)
+                .select('department_id')
+                .distinct();
+        } catch (e) {
+            console.log(e)
+            return e
+        }
+    }
+
+    async status_department_id(id) {
+        try {
+            return await db(this.table)
+                .where(id)
+                .select('*');
+        } catch (e) {
+            console.log(e)
+            return e
+        }
+    }
+}
+
 const employee = new employee_model('employees');
 const department = new department_model('department');
 const title = new title_model('title');
 const plant = new plant_model('plant');
 const workcenter = new workcenter_model('workcenter');
+const status = new status_model('status')
 
 module.exports = {
     employee,
     department,
     title,
     plant,
-    workcenter
+    workcenter,
+    status
 }

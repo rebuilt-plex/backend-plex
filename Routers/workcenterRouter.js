@@ -1,5 +1,5 @@
 const express = require('express');
-const { workcenter, employee, department, title, plant } = require('./ClassModel');
+const { workcenter, employee, department, title, plant, status } = require('./ClassModel');
 const verify_employee = require('../utils/verify_employee');
 
 
@@ -144,6 +144,42 @@ router.post('/logout', async (req, res, next) => {
            logged_out_employees: logged_out
        })
    })
+});
+
+router.post('/status', async (req, res, next) => {
+   try {
+       // pulling out our id's to work with
+       let { workcenter_id, status_id } = req.body
+       // retrieving workcenter data
+       workcenter_id = await workcenter.find_by({id:workcenter_id})
+       // retrieving status data
+       status_id = await status.find_by({id:status_id})
+       // check to make sure both exist
+       if (!workcenter_id || !status_id){
+           res.status(400).json({
+               error_message: 'Bad request, try again'
+           })
+       }
+       // retrieving the department name of the selected status
+       let department_name = await department.find_by({id: status_id.department_id})
+       // updating our workcenter status id
+       let updating = await workcenter.update(workcenter_id.id, {status_id: status_id.id})
+       // add fields to our return type
+       updating = {
+           ...updating,
+           status_name: status_id.name,
+           status_id: status_id.id,
+           department_name: department_name.name
+       }
+       // deleting unused fields
+       delete updating.plant_id
+       delete updating.department_id
+       // returning our updated data
+       res.status(200).json(updating)
+   } catch (e) {
+       console.log(e)
+       return e
+   }
 });
 
 module.exports = router;
