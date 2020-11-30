@@ -31,8 +31,6 @@ class base_model {
     };
 
     async update(id, data) {
-        console.log(id)
-        console.log(data)
         try {
             await db(this.table).update(data).where({id: id})
             return this.find_by({id})

@@ -1,58 +1,41 @@
 const express = require('express');
 const { employee, department, title } = require('./ClassModel');
+const employee_check = require('../utils/verify_employee');
 
 const router = express.Router();
 
 // route for employees to login
-router.post('/login', async (req, res, next) => {
+// using employee_check middleware to verify and return employee record
+router.post('/login', employee_check(), async (req, res, next) => {
     try {
-        // grabbing the employee_num from the body
-        let { employee_num } = req.body;
-        // using employee class model to use employee_num to retrieve employee data
-        let employee_data = await employee.find_by({employee_num});
-        // if no employee with provided employee_num: return error message
-        if (!employee_data) {
-            res.status(400).json({
-                error_message: `No employee with ${employee_num} found`
-            });
-        }
         // updating employee DB record to be clocked in
-        await employee.update(employee_data.id, {clocked_in: 1})
+        await employee.update(req.my_employee.id, {clocked_in: 1})
         // use department and title models to add fields for id's
-        let department_id = await department.find_by({id: employee_data.department_id});
-        let title_id = await title.find_by({id: employee_data.title_id});
+        let department_id = await department.find_by({id: req.my_employee.department_id});
+        let title_id = await title.find_by({id: req.my_employee.title_id});
         // constructing return data type
-        employee_data = {
-            ...employee_data,
+        req.my_employee = {
+            ...req.my_employee,
             department: department_id.name,
             title: title_id.name
         }
         // deleting the user password from return obj for security reasons
-        delete employee_data.password
-        delete employee_data.clocked_in
-        res.status(200).json(employee_data)
+        delete req.my_employee.password
+        delete req.my_employee.clocked_in
+        res.status(200).json(req.my_employee)
     } catch (e) {
         console.log(e)
         return e
     }
 })
-
-router.post('/logout', async (req, res, next) => {
+// route to log employee out
+// using middleware to verify employee
+router.post('/logout', employee_check(), async (req, res, next) => {
     try {
-        // grabbing the employee_num from the body
-        let {employee_num} = req.body;
-        // using employee class model to use employee_num to retrieve employee data
-        let employee_data = await employee.find_by({employee_num});
-        // if no employee with provided employee_num: return error message
-        if (!employee_data) {
-            res.status(400).json({
-                error_message: `No employee with ${employee_num} found`
-            });
-        }
         // updating employee record to clock out employee
-        await employee.update(employee_data.id, {clocked_in: 0})
+        await employee.update(req.my_employee.id, {clocked_in: 0})
         res.status(200).json({
-            message: `${employee_data.first_name} ${employee_data.last_name} has been logged out`
+            message: `${req.my_employee.first_name} ${req.my_employee.last_name} has been logged out`
         })
     } catch (e) {
         console.log(e)

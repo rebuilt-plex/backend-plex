@@ -1,7 +1,4 @@
 exports.seed = async function(knex) {
-    //TODO look into breaking out maintenance to
-    // weld tech mechanical electrical
-    // check workcenter txt {status schema}
   await knex('department').insert([
       {id: 1, name: 'Welding'},
       {id: 2, name: 'Roll-Forming'},

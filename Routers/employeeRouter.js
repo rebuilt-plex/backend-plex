@@ -1,6 +1,7 @@
 const express = require('express');
 const { employee } = require('./ClassModel');
 const hr_admin = require('../utils/hr_admin');
+const employee_check = require('../utils/verify_employee');
 
 
 let router = express.Router();
@@ -63,7 +64,7 @@ router.post('/new_employee', hr_admin(), async (req, res, next) => {
    }
 });
 // PUT route for HR to update employee records
-router.put('/update_employee', hr_admin(), async (req, res, next) => {
+router.put('/update_employee',employee_check(), hr_admin(), async (req, res, next) => {
    try {
        // pulling out all possible updatable DB fields
        let { employee_num,
@@ -92,7 +93,9 @@ router.put('/update_employee', hr_admin(), async (req, res, next) => {
            plant_id
        }
        // updating employee based of our DB id
-       let updated_employee = await employee.update(verify_employee.id, new_employee_data);
+       //TODO work on return type to switch id's with values
+       // util function to abstract this away???
+       let updated_employee = await employee.update(req.my_employee.id, new_employee_data);
        // returning updated employee record
        res.status(200).json(updated_employee)
    } catch (e) {
@@ -101,21 +104,13 @@ router.put('/update_employee', hr_admin(), async (req, res, next) => {
    }
 });
 // post route to handle removing an employee for the database
-router.post('/remove_employee', hr_admin(), async (req, res, next) => {
+router.post('/remove_employee',employee_check(), hr_admin(), async (req, res, next) => {
     try {
-       let { employee_num } = req.body
-        // using employee_num to verify employee is real
-        let verify_employee = await employee.find_by({employee_num});
-        // check and return message if employee is not found
-        if (!verify_employee) {
-            res.status(400).json({
-                error_message: `${employee_num} does not exist in our database`
-            })
-        }
+
         // retrieving employee name to return
-        let employee_name = await employee.employee_name(verify_employee.id);
+        let employee_name = await employee.employee_name(req.my_employee.id);
         // updating database to remove selected employee
-        let removed_employee = await employee.remove(verify_employee.id)
+        let removed_employee = await employee.remove(req.my_employee.id)
         // check to make sure the employee was removed successfully
         if (removed_employee) {
             res.status(200).json({

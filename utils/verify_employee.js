@@ -1,16 +1,19 @@
 const { employee } = require('../Routers/ClassModel');
-
-function verify_employee(employee_num) {
+// middleware function to verify and return employee record
+function verify_employee() {
     return async (req, res, next) => {
         try {
-            let my_employee = await employee.find_by({ employee_num })
+            // using employee_num to restive employee record
+            let my_employee = await employee.find_by({employee_num: req.body.employee_num})
+            // check to return 400 if no employee found
             if (!my_employee) {
                 return res.status(400).json({
-                    error_message: `${employee_num} does not match any employee`
+                    error_message: `${req.body.employee_num} does not match any employee`
                 })
-            } else {
-                return my_employee
             }
+            // attaching the employee record to the req obj
+            req.my_employee = my_employee
+            next()
         } catch (e) {
             console.log(e)
             return e
